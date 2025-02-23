@@ -55,7 +55,7 @@ export const getAccountTransactions = async (
       }
   
       const transactions = await accountService.getPaginatedTransactions(id, limit, offset);
-      res.json({ transactions });
+      res.json({accountId: id, transactions });
     } catch (error) {
       res.status(500).json({ error: (error as Error).message });
     }
