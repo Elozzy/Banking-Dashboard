@@ -1,4 +1,4 @@
-import { Account } from "./types";
+import { Account, AccountDetails, AccountTransaction } from "./types";
 
 const API_URL = "http://localhost:3001/api";
 
@@ -17,3 +17,38 @@ export const getAccount = async (id: string): Promise<Account> => {
   }
   return response.json();
 };
+
+export const getTransactionDetails = async (
+  id: string
+): Promise<AccountTransaction> => {
+  const response = await fetch(`${API_URL}/accounts/${id}/transactions`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch account");
+  }
+  return response.json();
+};
+
+export const createTransaction = async (
+  accountId: string,
+  transactionData: {
+    type: string;
+    amount: number;
+    description: string;
+  }
+): Promise<AccountTransaction> => {
+  const response = await fetch(`${API_URL}/accounts/${accountId}/transactions`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(transactionData),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create transaction");
+  }
+
+  return response.json();
+};
+
